@@ -1,12 +1,12 @@
 #!/bin/bash
 # Each loop must play in place of exactly one still of the same name in its
 # theme, in the format docs/theming.md asks for.
-# Usage: bin/check <omarchy checkout>
+# Usage: bin/check <omarchy-themes-backgrounds checkout>
 
 set -euo pipefail
 shopt -s nullglob
 
-omarchy=$(realpath "${1:?usage: bin/check <omarchy checkout>}")
+backgrounds=$(realpath "${1:?usage: bin/check <omarchy-themes-backgrounds checkout>}")
 cd "$(dirname "$0")/.."
 command -v ffprobe >/dev/null || { echo "bin/check needs ffprobe, from ffmpeg" >&2; exit 1; }
 
@@ -25,12 +25,12 @@ for loop in */*.mp4; do
 
   # Any case of image extension, as omarchy itself accepts.
   stills=()
-  for still in "$omarchy/themes/$theme/backgrounds/$stem".*; do
+  for still in "$backgrounds/$theme/$stem".*; do
     case ${still,,} in
       *.jpg | *.jpeg | *.png | *.bmp | *.webp) stills+=("$still") ;;
     esac
   done
-  ((${#stills[@]} == 1)) || problems+=("${#stills[@]} matching stills in themes/$theme/backgrounds")
+  ((${#stills[@]} == 1)) || problems+=("${#stills[@]} matching stills in $theme/")
 
   [[ $(probe stream=codec_name "$loop") == "h264" ]] || problems+=("not H.264")
   # Each field on a line of its own, whatever order ffprobe prints them in.

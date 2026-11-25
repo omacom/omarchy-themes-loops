@@ -4,7 +4,7 @@ on:
   push:
     branches: [master]
   pull_request:
-  # A still renamed or removed in omarchy leaves its loop behind without a push here.
+  # A still renamed or removed in omarchy-themes-backgrounds leaves its loop behind without a push here.
   schedule:
     - cron: "17 6 * * 1"
 
@@ -15,9 +15,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/checkout@v4
         with:
-          repository: omacom/omarchy
-          ref: quattro
-          path: omarchy
-          sparse-checkout: themes
+          repository: omacom/omarchy-themes-backgrounds
+          path: backgrounds
       - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
-      - run: bin/check omarchy
+      - run: bin/check backgrounds
